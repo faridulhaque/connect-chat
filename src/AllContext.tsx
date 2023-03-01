@@ -7,6 +7,7 @@ export const GlobalContext = React.createContext<any>({});
 
 const AllContext = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, currentLoading, currentError] = useAuthState(auth);
+  // console.log(currentUser)
 
   if (currentLoading) {
     return <Loading></Loading>;
@@ -16,9 +17,13 @@ const AllContext = ({ children }: { children: React.ReactNode }) => {
     console.log(currentError);
   }
 
+  const value = {
+    currentUser,
+  }
+
   return (
     <>
-      <GlobalContext.Provider value={currentUser}>
+      <GlobalContext.Provider value={value}>
         {children}
       </GlobalContext.Provider>
     </>

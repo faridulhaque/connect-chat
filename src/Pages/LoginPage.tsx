@@ -1,10 +1,56 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useSignInWithEmailAndPassword,
+  useSignInWithGoogle,
+} from "react-firebase-hooks/auth";
+import { auth, database } from "../firebase.init";
+import Loading from "../Components/Loading";
+import { doc, setDoc } from "firebase/firestore";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const email = e.currentTarget.email.value;
+    const password = e.currentTarget.password.value;
+    signInWithEmailAndPassword(email, password);
   };
+
+  const handleDoc = async (user: any) => {
+    await setDoc(doc(database, "users", user?.user?.uid), {
+      uid: user.user.uid,
+      displayName: user.user.displayName,
+      photoURL: user.user.photoURL,
+      email: user.user.email,
+    });
+
+    await setDoc(doc(database, "userChats", user?.user?.uid), {});
+    navigate("/");
+  };
+
+  if (gError || error) {
+    console.log("gError:" + gError);
+    console.log("userError:" + error);
+  }
+
+  if (loading || gLoading) {
+    return <Loading></Loading>;
+  }
+
+  if (user) {
+    navigate("/");
+  }
+
+  if (gUser) {
+    handleDoc(gUser);
+  }
 
   return (
     <div className="flex justify-center items-center w-full h-[100vh]">
@@ -22,6 +68,7 @@ const LoginPage = () => {
             className="block w-full my-2 px-2 py-3 rounded-lg bg-gray-100 placeholder-gray-500 text-gray-900 outline-gray-300"
             type="email"
             placeholder="Enter your email"
+            required
           />
         </div>
 
@@ -33,6 +80,7 @@ const LoginPage = () => {
             className="block w-full my-2 px-2 py-3 rounded-lg bg-gray-100 placeholder-gray-500 text-gray-900 outline-gray-300"
             type="password"
             placeholder="Enter your password"
+            required
           />
         </div>
 
@@ -53,6 +101,7 @@ const LoginPage = () => {
         </button>
 
         <button
+          onClick={()=>signInWithGoogle()}
           type="button"
           className="w-11/12 mt-4 block mx-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         >
