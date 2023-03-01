@@ -6,13 +6,16 @@ import { RouterProvider } from "react-router-dom";
 
 import reportWebVitals from "./reportWebVitals";
 import routers from "./routers";
+import AllContext from "./AllContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={routers} />
+    <AllContext>
+      <RouterProvider router={routers} />
+    </AllContext>
   </React.StrictMode>
 );
 

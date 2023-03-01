@@ -1,17 +1,11 @@
-import React from "react";
+import { FadeLoader } from 'react-spinners';
 
 const Loading = () => {
-  return (
-    <div className="flex items-center justify-center h-20 w-full">
-      <button type="button" className="bg-indigo-500 ..." disabled>
-        <svg
-          className="animate-spin h-5 w-5 mr-3 ..."
-          viewBox="0 0 24 24"
-        ></svg>
-        Loading...
-      </button>
-    </div>
-  );
+    return (
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+            <FadeLoader color={'rgb(178,11,33)'} className="w-[50px] h-[50px]"></FadeLoader>
+        </div>
+    );
 };
 
 export default Loading;
