@@ -22,7 +22,7 @@ const UserList = () => {
 
   const { state, dispatch } = openChatValues;
 
-  const [searchKey, setSearchKey] = useState("");
+  const [searchKey, setSearchKey] = useState("faridmurshed9@gmail.com");
 
   const [chats, setChats] = React.useState<any>([]);
 
@@ -57,8 +57,8 @@ const UserList = () => {
   const handleOpenChat = async () => {
     const combinedId: string =
       currentUser?.uid > searchedUser?.uid
-        ? currentUser.uid + searchedUser.uid
-        : searchedUser.uid + currentUser.uid;
+        ? currentUser.uid + searchedUser?.uid
+        : searchedUser?.uid + currentUser?.uid;
     try {
       const res = await getDoc(doc(database, "chats", combinedId));
 
@@ -66,17 +66,17 @@ const UserList = () => {
         await setDoc(doc(database, "chats", combinedId), { messages: [] });
 
         // create user chats
-        await updateDoc(doc(database, "userChats", currentUser.uid), {
+        await updateDoc(doc(database, "userChats", currentUser?.uid), {
           [combinedId + ".userInfo"]: {
-            uid: searchedUser.uid,
-            displayName: searchedUser.displayName,
+            uid: searchedUser?.uid,
+            displayName: searchedUser?.displayName,
             photoUrl: "https://i.ibb.co/6YK1cXs/avatar.jpg",
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
-        await updateDoc(doc(database, "userChats", searchedUser.uid), {
+        await updateDoc(doc(database, "userChats", searchedUser?.uid), {
           [combinedId + ".userInfo"]: {
-            uid: currentUser.uid,
+            uid: currentUser?.uid,
             displayName: currentUser.displayName,
             photoUrl: "https://i.ibb.co/6YK1cXs/avatar.jpg",
           },
@@ -108,7 +108,6 @@ const UserList = () => {
     dispatch({ type: "CHANGE_USER", payload: userInfo });
   };
 
-
   return (
     <div className="w-full h-auto">
       <Search
@@ -120,21 +119,25 @@ const UserList = () => {
       {error && <small className="text-red-400 ml-2">{error}</small>}
 
       {searchedUser?.uid ? (
+        // If searchedUser exists, render a User component with the details of that user
         <User
           searchedUser={searchedUser}
           setSearchedUser={setSearchedUser}
           handleOpenChat={handleOpenChat}
         ></User>
       ) : (
-        Object.entries(chats)?.sort((a:any, b:any)=> b[1].date - a[1].date).map((chat: any) => (
-          <RawUser
-            rawUser={chat[1]}
-            key={chat[0]}
-            handleSelectChat={handleSelectChat}
-            selectedUid={state.user.uid}
-
-          ></RawUser>
-        ))
+        // If searchedUser doesn't exist, check if chats exist
+        // If chats exist, sort them by date and map over them to render a list of RawUser components
+        Object.entries(chats)
+          .sort((a: any, b: any) => b[1].date - a[1].date)
+          .map((chat: any) => (
+            <RawUser
+              rawUser={chat[1]}
+              key={chat[0]}
+              handleSelectChat={handleSelectChat}
+              selectedUid={state?.user?.uid}
+            ></RawUser>
+          ))
       )}
     </div>
   );

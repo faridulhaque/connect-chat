@@ -66,7 +66,7 @@ const ChatBox = () => {
   }, [chatId]);
 
   return (
-    <div className="w-7/12 h-full bg-gray-500">
+    <div className="xl:w-7/12 pc:w-7/12 ipad:w-7/12 notebook:w-7/12 tablet:w-full mobile:w-full micro:w-full h-full bg-gray-500">
       <ChatBoxTop displayName={user?.displayName}></ChatBoxTop>
       <ChatTray messages={messages}></ChatTray>
       <ChatInput

@@ -9,8 +9,12 @@ import { doc, setDoc } from "firebase/firestore";
 import { auth, database } from "../firebase.init";
 import Loading from "../Components/Loading";
 
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+
 const RegisterPage = () => {
-  const navigate = useNavigate()
+  const [viewPassword, setViewPassword] = useState(false);
+
+  const navigate = useNavigate();
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
 
   const [createUserWithEmailAndPassword, createdUser, creating, createError] =
@@ -47,8 +51,7 @@ const RegisterPage = () => {
     });
   };
 
-
-  const handleDoc = async (user:any) => {
+  const handleDoc = async (user: any) => {
     await setDoc(doc(database, "users", user?.user?.uid), {
       uid: user.user.uid,
       displayName: user.user.displayName,
@@ -57,7 +60,7 @@ const RegisterPage = () => {
     });
 
     await setDoc(doc(database, "userChats", user?.user?.uid), {});
-    navigate("/")
+    navigate("/");
   };
 
   if (gError || createError || updateError) {
@@ -72,10 +75,8 @@ const RegisterPage = () => {
 
   if (createdUser || gUser) {
     const user: any = createdUser || gUser;
-    handleDoc(user)
+    handleDoc(user);
   }
-
-  
 
   return (
     <div className="flex justify-center items-center w-full h-[100vh]">
@@ -109,16 +110,27 @@ const RegisterPage = () => {
           />
         </div>
 
-        <div className="w-11/12 mx-auto mb-5">
+        <div className="w-11/12 mx-auto mb-5 relative">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Password
           </label>
           <input
             className="block w-full my-2 px-2 py-3 rounded-lg bg-gray-100 placeholder-gray-500 text-gray-900 outline-gray-300"
-            type="password"
+            type={viewPassword ? "text" : "password"}
             placeholder="Enter your password"
             name="password"
           />
+          {viewPassword ? (
+            <AiOutlineEye
+              onClick={() => setViewPassword(!viewPassword)}
+              className="absolute right-2 bottom-4 text-gray-500 text-xl cursor-pointer"
+            ></AiOutlineEye>
+          ) : (
+            <AiOutlineEyeInvisible
+              onClick={() => setViewPassword(!viewPassword)}
+              className="absolute right-2 bottom-4 text-gray-500 text-xl cursor-pointer"
+            ></AiOutlineEyeInvisible>
+          )}
         </div>
 
         <div className="w-11/12 mb-3 mx-auto">
@@ -137,13 +149,13 @@ const RegisterPage = () => {
           Register
         </button>
 
-        <button
+        {/* <button
           onClick={() => signInWithGoogle()}
           type="button"
           className="w-11/12 mt-4 block mx-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         >
           Sign up with Google
-        </button>
+        </button> */}
       </form>
     </div>
   );

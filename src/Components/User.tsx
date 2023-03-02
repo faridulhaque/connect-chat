@@ -23,6 +23,7 @@ const User = ({searchedUser, handleOpenChat, setSearchedUser}:searchTypes) => {
       </div>
       <div className="w-[80%] h-[98%]">
         <p className="mt-3 text-2xl text-gray-700">{searchedUser?.displayName}</p>
+        <small className="text-sm mt-3 text-gray-600">{searchedUser?.email}</small>
       </div>
     </div>
   );

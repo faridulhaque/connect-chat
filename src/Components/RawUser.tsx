@@ -29,8 +29,8 @@ const RawUser = ({ rawUser, handleSelectChat, selectedUid }: rawUser) => {
         <p className="mt-1 text-2xl text-gray-700 ">{displayName}</p>
         <small className="mt-3 text-sm text-gray-500">
           {rawUser?.lastMessage?.text.length < 20
-            ? rawUser.lastMessage.text
-            : rawUser.lastMessage.text.slice(0, 20) + " ..."}
+            ? rawUser?.lastMessage?.text
+            : rawUser?.lastMessage?.text?.slice(0, 20) + " ..."}
         </small>
       </div>
     </div>

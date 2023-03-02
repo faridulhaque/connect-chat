@@ -23,17 +23,22 @@ const useOpenChat = () => {
               : action.payload.uid + currentUser.uid,
           user: action.payload,
         };
+      case "GO_BACK":
+        return {
+          chatId: null,
+          user: {}
+        };
 
       default:
         return state;
     }
   };
 
-  const [state, dispatch] = React.useReducer(chatReducer, initialState)
+  const [state, dispatch] = React.useReducer(chatReducer, initialState);
 
   return {
     state,
-    dispatch
+    dispatch,
   };
 };
 
