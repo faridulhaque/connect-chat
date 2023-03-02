@@ -27,11 +27,15 @@ const RawUser = ({ rawUser, handleSelectChat, selectedUid }: rawUser) => {
       </div>
       <div className="w-[80%] h-[98%]">
         <p className="mt-1 text-2xl text-gray-700 ">{displayName}</p>
-        <small className="mt-3 text-sm text-gray-500">
-          {rawUser?.lastMessage?.text.length < 20
-            ? rawUser?.lastMessage?.text
-            : rawUser?.lastMessage?.text?.slice(0, 20) + " ..."}
-        </small>
+        {rawUser.lastMessage ? (
+          <small className="mt-3 text-sm text-gray-500">
+            {rawUser?.lastMessage?.text.length < 20
+              ? rawUser?.lastMessage?.text
+              : rawUser?.lastMessage?.text?.slice(0, 20) + " ..."}
+          </small>
+        ) : (
+          <small className="mt-3 text-sm text-gray-500">Start a conversation</small>
+        )}
       </div>
     </div>
   );
