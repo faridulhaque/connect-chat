@@ -1,10 +1,21 @@
-import React from 'react';
+import React from "react";
 
-const RawUser = ({rawUser}:any) => {
+type rawUser = {
+  rawUser: any;
+  handleSelectChat: (value: any) => void;
+  selectedUid: string;
+};
 
-const {displayName} = rawUser?.userInfo
-    return (
-        <div  className="w-full h-20 flex py-2 bg-blue-100 cursor-pointer">
+const RawUser = ({ rawUser, handleSelectChat, selectedUid }: rawUser) => {
+  const { displayName } = rawUser?.userInfo;
+
+  return (
+    <div
+      onClick={() => handleSelectChat(rawUser?.userInfo)}
+      className={`w-full h-20 flex py-2  cursor-pointer border-b-2 border-gray-400 ${
+        rawUser?.userInfo.uid === selectedUid ? "bg-blue-400" : "bg-white"
+      }`}
+    >
       <div className="w-[20%] flex items-center justify-center">
         {" "}
         <img
@@ -15,11 +26,15 @@ const {displayName} = rawUser?.userInfo
         />
       </div>
       <div className="w-[80%] h-[98%]">
-        <p className="mt-1 text-2xl text-gray-700">{displayName}</p>
-        <small className="mt-3 text-sm text-gray-500">hello</small>
+        <p className="mt-1 text-2xl text-gray-700 ">{displayName}</p>
+        <small className="mt-3 text-sm text-gray-500">
+          {rawUser?.lastMessage?.text.length < 20
+            ? rawUser.lastMessage.text
+            : rawUser.lastMessage.text.slice(0, 20) + " ..."}
+        </small>
       </div>
     </div>
-    );
+  );
 };
 
 export default RawUser;

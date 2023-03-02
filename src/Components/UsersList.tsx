@@ -18,7 +18,9 @@ import { GlobalContext } from "../AllContext";
 import RawUser from "./RawUser";
 
 const UserList = () => {
-  const {currentUser} = useContext(GlobalContext);
+  const { currentUser, openChatValues } = useContext(GlobalContext);
+
+  const { state, dispatch } = openChatValues;
 
   const [searchKey, setSearchKey] = useState("");
 
@@ -45,6 +47,11 @@ const UserList = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleClearSearch = () => {
+    setSearchKey("");
+    setSearchedUser({});
   };
 
   const handleOpenChat = async () => {
@@ -79,6 +86,7 @@ const UserList = () => {
     } catch (error) {
       console.log(error);
     }
+    dispatch({ type: "CHANGE_USER", payload: searchedUser });
   };
 
   const getChats = (uid: string) => {
@@ -96,11 +104,10 @@ const UserList = () => {
     }
   }, [currentUser]);
 
-  const handleClearSearch = () => {
-    setSearchKey("");
-    setSearchedUser({})
-
+  const handleSelectChat = (userInfo: any) => {
+    dispatch({ type: "CHANGE_USER", payload: userInfo });
   };
+
 
   return (
     <div className="w-full h-auto">
@@ -119,8 +126,14 @@ const UserList = () => {
           handleOpenChat={handleOpenChat}
         ></User>
       ) : (
-        Object.entries(chats)?.map((chat: any) => (
-          <RawUser rawUser={chat[1]} key={chat[0]}></RawUser>
+        Object.entries(chats)?.sort((a:any, b:any)=> b[1].date - a[1].date).map((chat: any) => (
+          <RawUser
+            rawUser={chat[1]}
+            key={chat[0]}
+            handleSelectChat={handleSelectChat}
+            selectedUid={state.user.uid}
+
+          ></RawUser>
         ))
       )}
     </div>

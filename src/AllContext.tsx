@@ -1,24 +1,20 @@
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import Loading from "./Components/Loading";
-import { auth } from "./firebase.init";
+import useCurrentUser from "./Hooks/useCurrentUser";
+import useOpenChat from "./Hooks/useOpenChat";
+
 
 export const GlobalContext = React.createContext<any>({});
 
 const AllContext = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, currentLoading, currentError] = useAuthState(auth);
-  // console.log(currentUser)
+ 
+const {currentUser} = useCurrentUser()  
 
-  if (currentLoading) {
-    return <Loading></Loading>;
-  }
-
-  if(currentError) {
-    console.log(currentError);
-  }
+const openChatValues = useOpenChat()
 
   const value = {
     currentUser,
+    openChatValues
+
   }
 
   return (
