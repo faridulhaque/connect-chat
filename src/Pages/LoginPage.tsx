@@ -63,7 +63,6 @@ console.log(error)
         onSubmit={handleSubmit}
         className="h-auto pc:w-4/12 notebook:w-2/4 ipad:w-3/4 mobile:w-11/12 micro:w-11/12 bg-white shadow-sm rounded-md px-5 py-10"
       >
-        <h2 className="text-center text-3xl text-blue-400 mb-5">Connect</h2>
         <h2 className="text-center text-2xl text-gray-700">Log In</h2>
 
         <div className="w-11/12 mx-auto mb-5">
