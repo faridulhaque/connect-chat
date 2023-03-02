@@ -13,6 +13,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [viewPassword, setViewPassword] = React.useState(false);
 
+
   const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
 
   const [signInWithEmailAndPassword, user, loading, error] =
@@ -38,12 +39,12 @@ const LoginPage = () => {
     navigate("/");
   };
 
-  if (gError || error) {
-    console.log("gError:" + gError);
-    console.log("userError:" + error);
+  if (error) {
+console.log(error)
+
   }
 
-  if (loading || gLoading) {
+  if (loading) {
     return <Loading></Loading>;
   }
 
@@ -102,6 +103,11 @@ const LoginPage = () => {
           )}
         </div>
 
+        {error && (
+          <div className="w-11/12 mb-3 mx-auto">
+            <small className="text-sm text-red-500">{error?.message}</small>
+          </div>
+        )}
         <div className="w-11/12 mb-3 mx-auto">
           <small className="text-sm text-gray-600">
             Don't have an account?{" "}

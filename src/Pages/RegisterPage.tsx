@@ -63,9 +63,11 @@ const RegisterPage = () => {
     navigate("/");
   };
 
-  if (gError || createError || updateError) {
-    console.log("gError:" + gError);
-    console.log("userError:" + createError);
+  if (createError) {
+    console.log(createError);
+  }
+
+  if (updateError) {
     console.log("updateError:" + updateError);
   }
 
@@ -121,6 +123,14 @@ const RegisterPage = () => {
             placeholder="Enter your password"
             name="password"
           />
+
+          {createError && (
+            <div className="w-full mb-3">
+              <small className="text-sm text-red-500">
+                {createError?.message}
+              </small>
+            </div>
+          )}
           {viewPassword ? (
             <AiOutlineEye
               onClick={() => setViewPassword(!viewPassword)}
