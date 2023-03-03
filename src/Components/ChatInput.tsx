@@ -7,21 +7,17 @@ type chatInputTypes = {
   text: string;
 };
 
-
-
-
-
 const ChatInput = ({ handleSend, setText, text }: chatInputTypes) => {
-
   useEffect(():any => {
-    const keyDownHandler = async (event: KeyboardEvent) => {
+    const keyDownHandler =  (event: KeyboardEvent) => {
       if (event.key === "Enter") {
         event.preventDefault();
         // do something when "Enter" is pressed
         handleSend()
       }
     };
-  
+
+
     document.addEventListener("keydown", keyDownHandler);
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
@@ -42,8 +38,7 @@ const ChatInput = ({ handleSend, setText, text }: chatInputTypes) => {
         placeholder="Type your message here"
       />
       {/* {text && ( */}
-      <button 
-      onClick={handleSend} disabled={!text}>
+      <button onClick={handleSend} disabled={!text}>
         <FaRegPaperPlane
           className={`text-2xl absolute bottom-0 top-0 my-auto right-3 cursor-pointer ${
             !text ? "opacity-50 cursor-not-allowed" : ""

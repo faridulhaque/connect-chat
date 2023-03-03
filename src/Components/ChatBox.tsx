@@ -22,8 +22,7 @@ const ChatBox = () => {
   const [text, setText] = useState("");
 
   const handleSend = async () => {
-
-    if (chatId && currentUser?.uid) {
+    if (chatId && currentUser?.uid && text) {
       await updateDoc(doc(database, "chats", chatId), {
         messages: arrayUnion({
           id: uuid(),
@@ -33,24 +32,21 @@ const ChatBox = () => {
         }),
       });
 
-      await updateDoc(doc(database, "userChats", currentUser.uid),{
-        [chatId +".lastMessage" ]: {
+      await updateDoc(doc(database, "userChats", currentUser.uid), {
+        [chatId + ".lastMessage"]: {
           text,
         },
-        [chatId +".date" ]:serverTimestamp()
-      })
+        [chatId + ".date"]: serverTimestamp(),
+      });
 
-
-      await updateDoc(doc(database, "userChats", user.uid),{
-        [chatId +".lastMessage" ]: {
+      await updateDoc(doc(database, "userChats", user.uid), {
+        [chatId + ".lastMessage"]: {
           text,
         },
-        [chatId +".date" ]:serverTimestamp()
-      })
-
-
-      setText("")
+        [chatId + ".date"]: serverTimestamp(),
+      });
     }
+    setText("");
   };
 
   useEffect(() => {
